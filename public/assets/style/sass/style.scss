@@ -1,0 +1,66 @@
+$dark_blue: #030D4A;
+$yellow: #E5FA00;
+$green: #82DB04;
+$gray: #333333;
+
+$text-color: #FFFFFF;
+
+$board-width: 800px;
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: $dark_blue;
+	width: 100%;
+}
+
+.board {
+	max-width: $board-width;
+	width: 100%;
+	background-color: #000000;
+	border: 5px inset $dark_blue;
+	color: $text-color;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.row {
+	clear: both;
+}
+
+.tile {
+	width: 10%;
+	float: left;
+	position: relative;
+	background-color: #000000;
+
+	&.player {
+		background: url( '/assets/images/alien-2.png' );
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	&.bomb {
+		background: url( '/assets/images/bomb-1.png' );
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	&::before {
+		content: "+";
+		display: block;
+		position: absolute;
+		color: $gray;
+		top: -.5em;
+		left: -.5em;
+	}
+
+	&::after {  
+		content: "";
+  		display: block;
+  		padding-bottom: 100%;
+	}
+}

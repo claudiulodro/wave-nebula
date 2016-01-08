@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #030D4A;
+  width: 100%; }
+
+.board {
+  max-width: 800px;
+  width: 100%;
+  background-color: #000000;
+  border: 5px inset #030D4A;
+  color: #FFFFFF;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto; }
+
+.row {
+  clear: both; }
+
+.tile {
+  width: 10%;
+  float: left;
+  position: relative;
+  background-color: #000000; }
+  .tile.player {
+    background: url("/assets/images/alien-2.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
+  .tile.bomb {
+    background: url("/assets/images/bomb-1.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
+  .tile::before {
+    content: "+";
+    display: block;
+    position: absolute;
+    color: #333333;
+    top: -.5em;
+    left: -.5em; }
+  .tile::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%; }
+
+/*# sourceMappingURL=style.css.map */
