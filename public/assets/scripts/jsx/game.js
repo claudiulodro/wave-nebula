@@ -20,12 +20,12 @@ var Tile = React.createClass({
 		var style = {};
 
 		if( this.props.data.type == "player" ){
-			style = { backgroundColor: this.props.data.race }; //Todo make this right
+			 //TODO add avatar to classes
 		}
 
 		return (
 			<div className={classes} style={style}>
-				{this.props.data.type}
+				&nbsp;
 			</div>
 		);
 
@@ -150,6 +150,74 @@ var Controls = React.createClass({
 	}
 });
 
+
+var AvatarOption = React.createClass({
+
+	onClicked: function(){
+		
+		if( !this.props.available ){
+			return;
+		}
+
+		//Make player, hide menu, and join game
+	},
+
+	render: function(){
+		var classes = "avatar-option " + this.props.avatar;		
+
+		return (
+			<div className={classes} onClick={this.onClicked} >
+				&nbsp;
+			</div>
+		);
+	}
+	
+});
+
+
+var AvatarSelect = React.createClass({
+
+	render: function(){		
+
+		return (
+			<div className="avatar-select">
+				{ 
+					this.props.avatars.map( function( avatar, i ){
+						return <AvatarOption avatar={avatar.id} available={avatar.available} />
+					})
+				}
+			</div>
+		);
+
+	}
+
+});
+
+var MainMenu = React.createClass({
+
+	getInitialState: function(){
+		return {
+			avatars: []
+		}
+	},
+
+	componentDidMount: function(){
+		//get available players
+	},
+
+	render: function(){
+		
+		return (
+			<div className="main-menu">
+				<div className="logo">&nbsp;</div>
+				<AvatarSelect avatars={this.props.avatars} />
+			</div>
+		);
+
+	}
+
+});
+
 /**
 * The game
 */
@@ -220,4 +288,9 @@ var Game = React.createClass({
 ReactDOM.render(
 	<Game />,
 	document.getElementById('game')
+);
+
+ReactDOM.render(
+	<MainMenu />,
+	document.getElementById('menu')
 );

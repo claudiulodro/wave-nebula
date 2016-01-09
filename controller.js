@@ -15,11 +15,6 @@ module.exports = {
 	ROUND_LENGTH: 15,
 	NUM_PLAYER_MOVES: 3,
 	NUM_BOTS: 3,
-	BOT_NAMES: [
-		"Jim",
-		"Joe",
-		"John"
-	],
 	
 
 	timer: 0,
@@ -27,12 +22,13 @@ module.exports = {
 	players: null,
 	moves: [],
 	bombs: [],
+	available_aliens: [ 1,2,3,4,5,6,7,8,9 ],
 
 	/**
 	* Get the game going
 	*/
 	init: function(){
-		
+
 		this.makeBoard();
 		this.makeBots();
 		this.timer = this.ROUND_LENGTH;
@@ -325,55 +321,69 @@ module.exports = {
 	makeBots: function(){
 		this.players = [];
 		
-		for( var i = 0; i < this.NUM_BOTS; ++i ){
-			this.addBot( this.BOT_NAMES[i], "blue" );
-		}
+		this.addBot( 1 );
+		this.addBot( 2 );
+		this.addBot( 3 );
 	},
 
 	/**
 	* Find a random, unused tile on the board
 	* @return Position object
-	* TODO: Make this not pick tiles that already have something on them
 	*/
 	getRandomPosition: function(){
+
 		var row_pos = Math.floor( ( Math.random() * this.BOARD_HEIGHT ) );
 		var column_pos = Math.floor( ( Math.random() * this.BOARD_WIDTH ) );
-		return new models.Position( row_pos, column_pos );
+		var position = new models.Position( row_pos, column_pos );
+
+		while( this.tileAt( position ).type !== 'floor' ){
+			row_pos = Math.floor( ( Math.random() * this.BOARD_HEIGHT ) );
+			column_pos = Math.floor( ( Math.random() * this.BOARD_WIDTH ) );
+			position = new models.Position( row_pos, column_pos );
+		}
+
+		return position;
 	},
 
 	/**
 	* Add a player to the game
-	* @param name - String: The name of the player
-	* @param race - String: The race of the player 
+	* @param avatar - String: The avatar of the player 
 	* @param is_human - Bool: Computer or player controlled player
 	*/
-	addPlayer: function( name, race, is_human ){
+	addPlayer: function( avatar, is_human ){
 
-		var player = new models.Player( name, race, is_human, this.NUM_PLAYER_MOVES );
+		for( var i = 0; i < this.available_aliens.length; ++i ){
+			if( this.available_aliens[i] == avatar ){
 
-		this.players.push( player ); 
+				var player = new models.Player( avatar, is_human, this.NUM_PLAYER_MOVES );
 
-		var tile = new models.PlayerTile( player.UID, player.race );
+				this.players.push( player ); 
 
-		this.updateBoard( this.getRandomPosition(), tile ); 
+				var tile = new models.PlayerTile( player.UID, player.avatar );
+
+				this.updateBoard( this.getRandomPosition(), tile ); 
+
+				return true;
+			}
+		}
+
+		return false;
 	},
 
 	/**
 	* Add a computer-controlled player to the game
-	* @param name - String: The name of the player
-	* @param race - String: The race of the playe
+	* @param avatar - String: The avatar of the player
 	*/
-	addBot: function( name, race ){
-		this.addPlayer( name, race, false );
+	addBot: function( avatar ){
+		this.addPlayer( avatar, false );
 	},
 
 	/**
 	* Add a human-controlled player to the game
-	* @param name - String: The name of the player
-	* @param race - String: The race of the playe
+	* @param avatar - String: The avatar of the playe
 	*/
-	addHuman: function( name, race ){
-		this.addPlayer( name, race, true );
+	addHuman: function( avatar ){
+		this.addPlayer( avatar, true );
 	},
 
 	/**

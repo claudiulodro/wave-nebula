@@ -12,7 +12,8 @@ body {
   color: #FFFFFF;
   overflow: hidden;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  margin-bottom: 200px; }
 
 .row {
   clear: both; }
@@ -43,5 +44,44 @@ body {
     content: "";
     display: block;
     padding-bottom: 100%; }
+
+.controls {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #FFFFFF; }
+  .controls .control-button {
+    width: 20%;
+    float: left;
+    background-color: red;
+    height: 100px; }
+    .controls .control-button.up {
+      background: url("assets/images/button-up.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .controls .control-button.down {
+      background: url("assets/images/button-down.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .controls .control-button.left {
+      background: url("assets/images/button-left.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .controls .control-button.right {
+      background: url("assets/images/button-right.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .controls .control-button.bomb {
+      background: url("assets/images/button-bomb.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
 
 /*# sourceMappingURL=style.css.map */

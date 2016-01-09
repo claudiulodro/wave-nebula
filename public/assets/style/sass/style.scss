@@ -7,6 +7,8 @@ $text-color: #FFFFFF;
 
 $board-width: 800px;
 
+//TODO: Make standard background stuff into an extendable module
+
 body {
 	margin: 0;
 	padding: 0;
@@ -23,6 +25,7 @@ body {
 	overflow: hidden;
 	margin-left: auto;
 	margin-right: auto;
+	margin-bottom: 200px;
 }
 
 .row {
@@ -62,5 +65,57 @@ body {
 		content: "";
   		display: block;
   		padding-bottom: 100%;
+	}
+}
+
+.controls {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	max-width: $board-width;
+	margin-left: auto;
+	margin-right: auto;
+	color: $text-color;
+
+	.control-button {
+		width: 20%;
+		float: left;
+		background-color: red;
+		height: 100px;
+
+		&.up {
+			background: url( 'assets/images/button-up.png' );
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		&.down {
+			background: url( 'assets/images/button-down.png' );
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		&.left {
+			background: url( 'assets/images/button-left.png' );
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		&.right {
+			background: url( 'assets/images/button-right.png' );
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		&.bomb {
+			background: url( 'assets/images/button-bomb.png' );
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
 	}
 }

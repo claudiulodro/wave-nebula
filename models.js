@@ -12,19 +12,18 @@ module.exports = {
 
 	/**
 	* Encapsulates information about one player
-	* @param string - name TODO remove name functionality
-	* @param string - race
+	* @param string - avatar
 	* @param bool - is_human
 	* @param int - moves_remaining
 	*/
-	Player: function( name, race, is_human, moves_remaining ){
+	Player: function( avatar, is_human, moves_remaining ){
 		this.type = "player";
-		this.name = name;
-		this.race = race;
+		this.avatar = avatar;
 		this.UID = Math.random();
 		this.is_human = is_human;
 		this.status = "OK"; 
 		this.moves_remaining = moves_remaining;
+		this.score = 0;
 	},
 
 	/**
@@ -42,12 +41,12 @@ module.exports = {
 	/**
 	* The representation of a player on the field
 	* @param UID
-	* @param string - race
+	* @param string - avatar
 	*/
-	PlayerTile: function( UID, race ){
+	PlayerTile: function( UID, avatar ){
 		this.type = "player";
 		this.UID = UID;
-		this.race = race;
+		this.avatar = avatar;
 	},
 
 	/**

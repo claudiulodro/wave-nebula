@@ -7,7 +7,7 @@ var app = express();
 app.use( express.static( 'public' ) );
 
 controller.init();
-controller.addHuman( "Claud", "orange" );
+controller.addHuman( 4 );
 
 /**
 * Serve the game page
