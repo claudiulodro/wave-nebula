@@ -1,14 +1,13 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #030D4A;
+  background-color: gray;
   width: 100%; }
 
 .board {
   max-width: 800px;
   width: 100%;
   background-color: #000000;
-  border: 5px inset #030D4A;
   color: #FFFFFF;
   overflow: hidden;
   margin-left: auto;
@@ -24,10 +23,54 @@ body {
   position: relative;
   background-color: #000000; }
   .tile.player {
-    background: url("/assets/images/alien-2.png");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat; }
+    .tile.player.avatar-1 {
+      background: url("/assets/images/alien-1.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-2 {
+      background: url("/assets/images/alien-2.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-3 {
+      background: url("/assets/images/alien-3.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-4 {
+      background: url("/assets/images/alien-4.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-5 {
+      background: url("/assets/images/alien-5.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-6 {
+      background: url("/assets/images/alien-6.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-7 {
+      background: url("/assets/images/alien-7.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-8 {
+      background: url("/assets/images/alien-8.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+    .tile.player.avatar-9 {
+      background: url("/assets/images/alien-9.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
   .tile.bomb {
     background: url("/assets/images/bomb-1.png");
     background-size: contain;
@@ -45,43 +88,57 @@ body {
     display: block;
     padding-bottom: 100%; }
 
-.controls {
-  position: fixed;
-  bottom: 0;
+.controls-container {
+  background-color: gray;
   width: 100%;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  color: #FFFFFF; }
-  .controls .control-button {
-    width: 20%;
-    float: left;
-    background-color: red;
-    height: 100px; }
-    .controls .control-button.up {
-      background: url("assets/images/button-up.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .controls .control-button.down {
-      background: url("assets/images/button-down.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .controls .control-button.left {
-      background: url("assets/images/button-left.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .controls .control-button.right {
-      background: url("assets/images/button-right.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .controls .control-button.bomb {
-      background: url("assets/images/button-bomb.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
+  position: fixed;
+  bottom: 0; }
+  .controls-container .controls {
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #FFFFFF;
+    border-top: 10px solid #4d4d4d; }
+    .controls-container .controls .control-button-container {
+      width: 20%;
+      float: left; }
+      .controls-container .controls .control-button-container .control-button {
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 10%;
+        margin-bottom: 10%;
+        background: red;
+        height: 60px;
+        border-top: 3px solid #990000; }
+        .controls-container .controls .control-button-container .control-button.up {
+          background: red url("/assets/images/button-up.png");
+          background-size: 35%;
+          background-position: center;
+          background-repeat: no-repeat; }
+        .controls-container .controls .control-button-container .control-button.down {
+          background: red url("/assets/images/button-down.png");
+          background-size: 35%;
+          background-position: center;
+          background-repeat: no-repeat; }
+        .controls-container .controls .control-button-container .control-button.left {
+          background: red url("/assets/images/button-left.png");
+          background-size: 35%;
+          background-position: center;
+          background-repeat: no-repeat; }
+        .controls-container .controls .control-button-container .control-button.right {
+          background: red url("/assets/images/button-right.png");
+          background-size: 35%;
+          background-position: center;
+          background-repeat: no-repeat; }
+        .controls-container .controls .control-button-container .control-button.bomb {
+          background: red url("/assets/images/button-bomb.png");
+          background-size: 40%;
+          background-position: center;
+          background-repeat: no-repeat; }
+        .controls-container .controls .control-button-container .control-button:active {
+          background-color: #990000;
+          border-top: none; }
 
 /*# sourceMappingURL=style.css.map */

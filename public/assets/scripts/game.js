@@ -1,3 +1,17 @@
+/**
+* FRONTEND TODO:
+* Player join/select
+* Move limit
+* Lose messages
+* Score visual
+* Countdown visual
+* Used moves visual
+* CSS
+*/
+
+/**
+* One tile on the field
+*/
 var Tile = React.createClass({
 	displayName: "Tile",
 
@@ -7,18 +21,21 @@ var Tile = React.createClass({
 		var style = {};
 
 		if (this.props.data.type == "player") {
-			style = { backgroundColor: this.props.data.race }; //Todo make this right
+			classes += " avatar-" + this.props.data.avatar;
 		}
 
 		return React.createElement(
 			"div",
 			{ className: classes, style: style },
-			this.props.data.type
+			" "
 		);
 	}
 
 });
 
+/**
+* One row of Tiles
+*/
 var Row = React.createClass({
 	displayName: "Row",
 
@@ -35,6 +52,9 @@ var Row = React.createClass({
 
 });
 
+/**
+* The game board
+*/
 var Board = React.createClass({
 	displayName: "Board",
 
@@ -55,6 +75,9 @@ var Board = React.createClass({
 
 });
 
+/**
+* A button for making directional moves
+*/
 var ControlButton = React.createClass({
 	displayName: "ControlButton",
 
@@ -72,13 +95,20 @@ var ControlButton = React.createClass({
 
 		return React.createElement(
 			"div",
-			{ className: classes, onClick: this.onClicked },
-			this.props.direction
+			{ className: "control-button-container" },
+			React.createElement(
+				"div",
+				{ className: classes, onClick: this.onClicked },
+				" "
+			)
 		);
 	}
 
 });
 
+/**
+* A button for dropping bombs
+*/
 var BombButton = React.createClass({
 	displayName: "BombButton",
 
@@ -96,13 +126,20 @@ var BombButton = React.createClass({
 
 		return React.createElement(
 			"div",
-			{ className: classes, onClick: this.onClicked },
-			"Bomb"
+			{ className: "control-button-container" },
+			React.createElement(
+				"div",
+				{ className: classes, onClick: this.onClicked },
+				" "
+			)
 		);
 	}
 
 });
 
+/**
+* The player controls
+*/
 var Controls = React.createClass({
 	displayName: "Controls",
 
@@ -110,16 +147,116 @@ var Controls = React.createClass({
 
 		return React.createElement(
 			"div",
-			{ className: "controls" },
-			React.createElement(ControlButton, { UID: this.props.player.UID, direction: "up" }),
-			React.createElement(ControlButton, { UID: this.props.player.UID, direction: "left" }),
-			React.createElement(ControlButton, { UID: this.props.player.UID, direction: "right" }),
-			React.createElement(ControlButton, { UID: this.props.player.UID, direction: "down" }),
-			React.createElement(BombButton, { UID: this.props.player.UID })
+			{ className: "controls-container" },
+			React.createElement(
+				"div",
+				{ className: "controls" },
+				React.createElement(ControlButton, { UID: this.props.player.UID, direction: "up" }),
+				React.createElement(ControlButton, { UID: this.props.player.UID, direction: "left" }),
+				React.createElement(ControlButton, { UID: this.props.player.UID, direction: "right" }),
+				React.createElement(ControlButton, { UID: this.props.player.UID, direction: "down" }),
+				React.createElement(BombButton, { UID: this.props.player.UID })
+			)
 		);
 	}
 });
 
+var Nav = React.createClass({
+	displayName: "Nav",
+
+	getInitialState: function () {
+		return {
+			timer: 0
+		};
+	},
+
+	render: function () {
+
+		return React.createElement(
+			"div",
+			{ className: "nav-bar" },
+			React.createElement(
+				"div",
+				{ className: "timer" },
+				this.props.timer
+			)
+		);
+	}
+
+});
+
+var AvatarOption = React.createClass({
+	displayName: "AvatarOption",
+
+	onClicked: function () {
+
+		if (!this.props.available) {
+			return;
+		}
+
+		//Make player, hide menu, and join game
+	},
+
+	render: function () {
+		var classes = "avatar-option " + this.props.avatar;
+
+		return React.createElement(
+			"div",
+			{ className: classes, onClick: this.onClicked },
+			" "
+		);
+	}
+
+});
+
+var AvatarSelect = React.createClass({
+	displayName: "AvatarSelect",
+
+	render: function () {
+
+		return React.createElement(
+			"div",
+			{ className: "avatar-select" },
+			this.props.avatars.map(function (avatar, i) {
+				return React.createElement(AvatarOption, { avatar: avatar.id, available: avatar.available });
+			})
+		);
+	}
+
+});
+
+var MainMenu = React.createClass({
+	displayName: "MainMenu",
+
+	getInitialState: function () {
+		return {
+			avatars: []
+		};
+	},
+
+	componentDidMount: function () {
+		//get available players
+	},
+
+	render: function () {
+
+		return React.createElement(
+			"div",
+			{ className: "main-menu" },
+			React.createElement(
+				"div",
+				{ className: "logo" },
+				" "
+			),
+			React.createElement(AvatarSelect, { avatars: this.props.avatars })
+		);
+	}
+
+});
+
+/**
+* The game
+*/
 var Game = React.createClass({
 	displayName: "Game",
 
@@ -159,7 +296,9 @@ var Game = React.createClass({
 
 		setInterval(function () {
 			if (self.state.timer > 0) {
-				--self.state.timer;
+				self.setState({
+					timer: self.state.timer - 1
+				});
 			}
 			console.log(self.state.timer);
 		}, 1000);
@@ -179,6 +318,7 @@ var Game = React.createClass({
 		return React.createElement(
 			"div",
 			{ className: "game" },
+			React.createElement(Nav, { timer: this.state.timer }),
 			React.createElement(Board, { rows: this.state.rows }),
 			React.createElement(Controls, { player: active_player })
 		);
@@ -186,3 +326,5 @@ var Game = React.createClass({
 });
 
 ReactDOM.render(React.createElement(Game, null), document.getElementById('game'));
+
+ReactDOM.render(React.createElement(MainMenu, null), document.getElementById('menu'));

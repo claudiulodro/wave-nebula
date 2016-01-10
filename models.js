@@ -63,6 +63,15 @@ module.exports = {
 	BombTile: function( turns_remaining ){
 		this.type = "bomb";
 		this.turns_remaining = turns_remaining;
+	},
+
+	/**
+	* Contains info about one available avatar
+	* @param int - an id to keep track of avatar with
+	*/
+	Avatar: function( id ){
+		this.id = id;
+		this.available = true;
 	}
 
 };

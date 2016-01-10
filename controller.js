@@ -22,7 +22,17 @@ module.exports = {
 	players: null,
 	moves: [],
 	bombs: [],
-	available_aliens: [ 1,2,3,4,5,6,7,8,9 ],
+	avatars: [ 
+		new models.Avatar(1),
+		new models.Avatar(2),
+		new models.Avatar(3),
+		new models.Avatar(4),
+		new models.Avatar(5),
+		new models.Avatar(6),
+		new models.Avatar(7),
+		new models.Avatar(8),
+		new models.Avatar(9)
+	 ],
 
 	/**
 	* Get the game going
@@ -352,8 +362,8 @@ module.exports = {
 	*/
 	addPlayer: function( avatar, is_human ){
 
-		for( var i = 0; i < this.available_aliens.length; ++i ){
-			if( this.available_aliens[i] == avatar ){
+		for( var i = 0; i < this.avatars.length; ++i ){
+			if( this.avatars[i].id == avatar && this.avatars[i].available ){
 
 				var player = new models.Player( avatar, is_human, this.NUM_PLAYER_MOVES );
 
@@ -362,6 +372,8 @@ module.exports = {
 				var tile = new models.PlayerTile( player.UID, player.avatar );
 
 				this.updateBoard( this.getRandomPosition(), tile ); 
+
+				this.avatars[i].available = false;
 
 				return true;
 			}

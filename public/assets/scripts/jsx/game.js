@@ -20,7 +20,7 @@ var Tile = React.createClass({
 		var style = {};
 
 		if( this.props.data.type == "player" ){
-			 //TODO add avatar to classes
+			 classes += " avatar-" + this.props.data.avatar;
 		}
 
 		return (
@@ -98,8 +98,10 @@ var ControlButton = React.createClass({
 		var classes = "control-button " + this.props.direction;		
 
 		return (
-			<div className={classes} onClick={this.onClicked} >
-				{this.props.direction}
+			<div className="control-button-container">
+				<div className={classes} onClick={this.onClicked} >
+					&nbsp;
+				</div>
 			</div>
 		);
 	}
@@ -124,8 +126,10 @@ var BombButton = React.createClass({
 		var classes = "control-button bomb";		
 
 		return (
-			<div className={classes} onClick={this.onClicked} >
-				Bomb
+			<div className="control-button-container">
+				<div className={classes} onClick={this.onClicked} >
+					&nbsp;
+				</div>
 			</div>
 		);
 	}	
@@ -139,17 +143,38 @@ var Controls = React.createClass({
 	render: function(){
 
 		return (
-			<div className="controls">
-				<ControlButton UID={this.props.player.UID} direction="up" />
-				<ControlButton UID={this.props.player.UID} direction="left" />
-				<ControlButton UID={this.props.player.UID} direction="right" />
-				<ControlButton UID={this.props.player.UID} direction="down" />
-				<BombButton UID={this.props.player.UID} />
+			<div className="controls-container">
+				<div className="controls">
+					<ControlButton UID={this.props.player.UID} direction="up" />
+					<ControlButton UID={this.props.player.UID} direction="left" />
+					<ControlButton UID={this.props.player.UID} direction="right" />
+					<ControlButton UID={this.props.player.UID} direction="down" />
+					<BombButton UID={this.props.player.UID} />
+				</div>
 			</div>
 		);
 	}
 });
 
+var Nav = React.createClass({
+
+	getInitialState: function(){
+		return {
+			timer: 0
+		}
+	},
+
+	render: function(){
+		
+		return (
+			<div className="nav-bar">
+				<div className="timer">{this.props.timer}</div>
+			</div>
+		);
+
+	}
+
+});
 
 var AvatarOption = React.createClass({
 
@@ -259,7 +284,9 @@ var Game = React.createClass({
 
 		setInterval( function(){
 			if( self.state.timer > 0 ){
-				--self.state.timer;
+				self.setState({
+					timer: self.state.timer - 1
+				});				
 			}
 			console.log( self.state.timer );
 		}, 1000 );
@@ -278,6 +305,7 @@ var Game = React.createClass({
 
 		return (
 			<div className="game">
+				<Nav timer={this.state.timer} />
 				<Board rows={this.state.rows} />
 				<Controls player={active_player} />
 			</div>
