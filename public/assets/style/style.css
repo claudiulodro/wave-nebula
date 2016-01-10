@@ -17,60 +17,95 @@ body {
 .row {
   clear: both; }
 
+#menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #030D4A;
+  width: 100%;
+  height: 100%; }
+
+.main-menu {
+  max-width: 800px; }
+  .main-menu .logo {
+    background: url("/assets/images/wn-logo.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 15%; }
+  .main-menu .avatar-select {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto; }
+  .main-menu .avatar-option {
+    width: 100px;
+    height: 100px;
+    background-color: #000000;
+    float: left;
+    opacity: .3;
+    cursor: pointer; }
+    .main-menu .avatar-option.available {
+      opacity: 1; }
+
+.avatar-1 {
+  background: url("/assets/images/alien-1.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-2 {
+  background: url("/assets/images/alien-2.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-3 {
+  background: url("/assets/images/alien-3.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-4 {
+  background: url("/assets/images/alien-4.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-5 {
+  background: url("/assets/images/alien-5.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-6 {
+  background: url("/assets/images/alien-6.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-7 {
+  background: url("/assets/images/alien-7.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-8 {
+  background: url("/assets/images/alien-8.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.avatar-9 {
+  background: url("/assets/images/alien-9.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
 .tile {
   width: 10%;
   float: left;
   position: relative;
   background-color: #000000; }
-  .tile.player {
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat; }
-    .tile.player.avatar-1 {
-      background: url("/assets/images/alien-1.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-2 {
-      background: url("/assets/images/alien-2.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-3 {
-      background: url("/assets/images/alien-3.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-4 {
-      background: url("/assets/images/alien-4.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-5 {
-      background: url("/assets/images/alien-5.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-6 {
-      background: url("/assets/images/alien-6.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-7 {
-      background: url("/assets/images/alien-7.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-8 {
-      background: url("/assets/images/alien-8.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
-    .tile.player.avatar-9 {
-      background: url("/assets/images/alien-9.png");
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat; }
   .tile.bomb {
     background: url("/assets/images/bomb-1.png");
     background-size: contain;

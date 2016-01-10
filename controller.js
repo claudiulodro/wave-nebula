@@ -297,6 +297,14 @@ module.exports = {
 	},
 
 	/**
+	* Get the avatars and their availability
+	* @return array of Avatar objects
+	*/
+	getAvatars: function(){
+		return this.avatars;
+	},
+
+	/**
 	* Get all the game information
 	* @return - object: All available game info
 	*/ 
@@ -305,7 +313,8 @@ module.exports = {
 		return {
 			tiles: this.getBoard(),
 			players: this.getPlayers(),
-			timer: this.getTimer()
+			timer: this.getTimer(),
+			avatars: this.getAvatars()
 		}
 
 	},
@@ -359,6 +368,7 @@ module.exports = {
 	* Add a player to the game
 	* @param avatar - String: The avatar of the player 
 	* @param is_human - Bool: Computer or player controlled player
+	* @return UID on success, false on fail
 	*/
 	addPlayer: function( avatar, is_human ){
 
@@ -375,7 +385,7 @@ module.exports = {
 
 				this.avatars[i].available = false;
 
-				return true;
+				return player.UID;
 			}
 		}
 
@@ -387,7 +397,7 @@ module.exports = {
 	* @param avatar - String: The avatar of the player
 	*/
 	addBot: function( avatar ){
-		this.addPlayer( avatar, false );
+		return this.addPlayer( avatar, false );
 	},
 
 	/**
@@ -395,7 +405,7 @@ module.exports = {
 	* @param avatar - String: The avatar of the playe
 	*/
 	addHuman: function( avatar ){
-		this.addPlayer( avatar, true );
+		return this.addPlayer( avatar, true );
 	},
 
 	/**

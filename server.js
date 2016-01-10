@@ -7,7 +7,6 @@ var app = express();
 app.use( express.static( 'public' ) );
 
 controller.init();
-controller.addHuman( 4 );
 
 /**
 * Serve the game page
@@ -72,6 +71,37 @@ app.get( '/api/gamestate', function( req, res ) {
 	res.send( util.sendSuccess( data ) );
 });
 
+/**
+* Get the avatars
+* @return JSON
+*/
+app.get( '/api/avatars', function( req, res ) {
+	var avatars = controller.getAvatars();
+	res.send( util.sendSuccess( avatars ) );
+});
+
+/**
+* Add a player
+* @param in req - Avatar
+* @return JSON
+*/
+app.get( '/api/addplayer', function( req, res ) {
+
+	if( typeof req.query === 'undefined' || typeof req.query.avatar === 'undefined' ){
+		res.send( util.sendError( "Missing parameters" ) );
+		return;
+	}
+
+	var UID = controller.addHuman( req.query.avatar );
+console.log( "UID: " + UID + "AVATAR: " + req.query.avatar );
+	if( !UID ){
+		res.send( util.sendError( "Failed to add player" ) );
+		return;
+	}
+
+	res.send( util.sendSuccess( UID ) );
+});
+
 var server = app.listen( 8081, function() {
 
 	var host = server.address().address;
@@ -80,3 +110,5 @@ var server = app.listen( 8081, function() {
 	console.log( "Server listening at http://%s:%s", host, port );
 
 });
+
+

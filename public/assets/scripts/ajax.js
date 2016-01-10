@@ -1,6 +1,29 @@
 var EventHandler = $( window );
 
-function addPlayer( name, color ){
+function getAvatars(){
+
+	$.get( "api/avatars", 
+		{}, 
+		function( response ) {
+			console.log( "Avatar state: " );
+			console.log( response );
+			EventHandler.trigger( "avatars-fetched", response );
+		}
+	);
+
+}
+
+function addPlayer( avatar ){
+
+	$.get( "api/addplayer", 
+		{ 
+			avatar: avatar, 
+		}, 
+		function( response ) {
+			console.log( response );			
+			EventHandler.trigger( "player-added", response );
+		}
+	);
 
 }
 

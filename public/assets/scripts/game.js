@@ -4,7 +4,6 @@
 * Move limit
 * Lose messages
 * Score visual
-* Countdown visual
 * Used moves visual
 * CSS
 */
@@ -194,11 +193,25 @@ var AvatarOption = React.createClass({
 			return;
 		}
 
-		//Make player, hide menu, and join game
+		addPlayer(this.props.avatar);
+
+		EventHandler.on('player-added', function (evt, response) {
+
+			console.log("PLAYR MADE");
+			if (response.status != "OK") {
+				console.log("Error making player");
+				return;
+			}
+
+			ReactDOM.render(React.createElement(Game, { UID: response.data }), document.getElementById('game'));
+		});
 	},
 
 	render: function () {
-		var classes = "avatar-option " + this.props.avatar;
+		var classes = "avatar-option avatar-" + this.props.avatar;
+		if (this.props.available) {
+			classes += " available";
+		}
 
 		return React.createElement(
 			"div",
@@ -234,11 +247,46 @@ var MainMenu = React.createClass({
 		};
 	},
 
+	updateState: function (data) {
+		this.setState({
+			avatars: data
+		});
+	},
+
 	componentDidMount: function () {
-		//get available players
+		var self = this;
+		getAvatars();
+
+		EventHandler.on('avatars-fetched', function (evt, response) {
+
+			console.log("AVATARS FETCHED");
+			if (response.status != "OK") {
+				console.log("Error fetching avatars");
+				return;
+			}
+
+			self.updateState(response.data);
+		});
 	},
 
 	render: function () {
+
+		if (typeof this.state === 'undefined' || typeof this.state.avatars === 'undefined') {
+			return React.createElement(
+				"div",
+				{ className: "main-menu" },
+				React.createElement(
+					"div",
+					{ className: "logo" },
+					" "
+				),
+				React.createElement(
+					"div",
+					{ className: "loading" },
+					"Loading . . ."
+				)
+			);
+		}
 
 		return React.createElement(
 			"div",
@@ -248,7 +296,7 @@ var MainMenu = React.createClass({
 				{ className: "logo" },
 				" "
 			),
-			React.createElement(AvatarSelect, { avatars: this.props.avatars })
+			React.createElement(AvatarSelect, { avatars: this.state.avatars })
 		);
 	}
 
@@ -309,7 +357,7 @@ var Game = React.createClass({
 		var active_player = false;
 
 		for (var i = 0; i < this.state.players.length; ++i) {
-			if (this.state.players[i].is_human) {
+			if (this.state.players[i].UID == this.props.UID) {
 				active_player = this.state.players[i];
 				break;
 			}
@@ -324,7 +372,5 @@ var Game = React.createClass({
 		);
 	}
 });
-
-ReactDOM.render(React.createElement(Game, null), document.getElementById('game'));
 
 ReactDOM.render(React.createElement(MainMenu, null), document.getElementById('menu'));
