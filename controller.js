@@ -1,12 +1,5 @@
 var models = require( './models' );
 
-/*
-BACKEND TODO:
-	Add move limit and selected avatar to players
-	Build checkForDeaths 
-	Scoring
-*/
-
 module.exports = {
 
 	BOARD_WIDTH: 10,
@@ -18,8 +11,8 @@ module.exports = {
 	
 
 	timer: 0,
-	tiles: null,
-	players: null,
+	tiles: [],
+	players: [],
 	moves: [],
 	bombs: [],
 	avatars: [ 
@@ -55,11 +48,64 @@ module.exports = {
 	*/
 	nextRound: function(){
 
+		this.shuffleBots();
 		this.doAllMoves();
 		this.processCurrentBombs();
 		this.addNewBombs();
-		//this.checkForDeaths(); TODO
+
 		this.timer = this.ROUND_LENGTH;
+
+		for( var i = 0; i < this.players.length; ++i ){
+
+			if( this.players[i].status == "dead" ){
+
+				//Free up their avatar
+				for( var j = 0; j < this.avatars.length; ++j ){
+					if( this.players[i].avatar == this.avatars[j].id ){
+						this.avatars[j].available = true;
+						break;
+					}
+				}
+
+				//remove player from list
+				//TODO
+
+				//add player back to game if bot
+				if( !this.players[i].is_human ){
+
+					var available_avatars_exist = false;
+
+					for( var j = 0; j < this.avatars.length; ++j ){
+						if( this.avatars[j].available ){
+							available_avatars_exist = true;
+							break;
+						}
+					}
+
+					if( available_avatars_exist ){
+						var bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
+						while( !this.avatars[bot_avatar].available ){
+							bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
+						}
+						this.addBot( bot_avatar );
+					}
+
+				}
+			}
+			else {
+				this.players[i].moves_remaining = this.NUM_PLAYER_MOVES;
+				var tile = this.getTileByPlayer( this.players[i].UID );
+				if( tile ){
+					++this.players[i].score;
+				} 
+				else {
+					this.players[i].status = "dead";
+				}
+			}
+
+
+		}
+
 	},
 
 	/**
@@ -68,8 +114,18 @@ module.exports = {
 	* @param string - "down", "left", "up", "right", or "bomb"
 	*/
 	enqueueMove: function( UID, type ){
+		var player = this.getPlayerByUID( UID );
+		if( !player || player.status != "OK" ){
+			return false;
+		}
 
-		this.moves.push( new models.PlayerMove( UID, type ) );
+		if( player.moves_remaining > 0 ){
+			this.moves.push( new models.PlayerMove( UID, type ) );
+			--player.moves_remaining;
+			return true;
+		}
+		
+		return false;
 
 	},
 
@@ -397,6 +453,7 @@ module.exports = {
 	* @param avatar - String: The avatar of the player
 	*/
 	addBot: function( avatar ){
+		console.log( "ADDING BOT WITH AVATAR: " + avatar );
 		return this.addPlayer( avatar, false );
 	},
 
@@ -559,20 +616,15 @@ module.exports = {
 			}
 		}
 
+		var possibleMoves = [ "up", "down", "left", "right", "bomb" ];
+
 		for( var i = 0; i < bots.length; ++i ){
-			var old_tile_position = this.getTileByPlayer( bots[i].UID );
-			if( !old_tile_position ){ continue; }
 
-			var new_tile_position = new models.Position( old_tile_position.row, old_tile_position.column );
-
-			if( new_tile_position.row < this.BOARD_HEIGHT - 1 ){
-				++new_tile_position.row;
+			//enqueue 3 random moves picked from possibleMoves
+			for( var j = 0; j < this.NUM_PLAYER_MOVES; ++j ){
+				var move = Math.floor( ( Math.random() * possibleMoves.length ) );
+				this.enqueueMove( bots[i].UID, possibleMoves[move] );
 			}
-			else {
-				--new_tile_position.row;
-			}
-				
-			this.enqueueMove( "move", old_tile_position, new_tile_position );
 
 		}
 		this.doAllMoves();

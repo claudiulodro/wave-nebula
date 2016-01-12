@@ -173,11 +173,20 @@ var Nav = React.createClass({
 
 		return React.createElement(
 			"div",
-			{ className: "nav-bar" },
+			{ className: "nav-bar-container" },
 			React.createElement(
 				"div",
-				{ className: "timer" },
-				this.props.timer
+				{ className: "nav-bar" },
+				React.createElement(
+					"div",
+					{ className: "timer" },
+					this.props.timer
+				),
+				React.createElement(
+					"div",
+					{ className: "remaining-moves" },
+					this.props.player.moves_remaining
+				)
 			)
 		);
 	}
@@ -194,6 +203,7 @@ var AvatarOption = React.createClass({
 		}
 
 		addPlayer(this.props.avatar);
+		var self = this;
 
 		EventHandler.on('player-added', function (evt, response) {
 
@@ -202,6 +212,8 @@ var AvatarOption = React.createClass({
 				console.log("Error making player");
 				return;
 			}
+
+			self.props.onSelected();
 
 			ReactDOM.render(React.createElement(Game, { UID: response.data }), document.getElementById('game'));
 		});
@@ -226,12 +238,13 @@ var AvatarSelect = React.createClass({
 	displayName: "AvatarSelect",
 
 	render: function () {
+		var self = this;
 
 		return React.createElement(
 			"div",
 			{ className: "avatar-select" },
 			this.props.avatars.map(function (avatar, i) {
-				return React.createElement(AvatarOption, { avatar: avatar.id, available: avatar.available });
+				return React.createElement(AvatarOption, { avatar: avatar.id, available: avatar.available, onSelected: self.props.onSelected });
 			})
 		);
 	}
@@ -243,7 +256,8 @@ var MainMenu = React.createClass({
 
 	getInitialState: function () {
 		return {
-			avatars: []
+			avatars: [],
+			visible: true
 		};
 	},
 
@@ -269,6 +283,11 @@ var MainMenu = React.createClass({
 		});
 	},
 
+	onSelected: function () {
+		console.log("PICKED A DUDE");
+		this.setState({ visible: false });
+	},
+
 	render: function () {
 
 		if (typeof this.state === 'undefined' || typeof this.state.avatars === 'undefined') {
@@ -288,15 +307,20 @@ var MainMenu = React.createClass({
 			);
 		}
 
+		var classes = "main-menu";
+		if (!this.state.visible) {
+			classes += " is-hidden";
+		}
+
 		return React.createElement(
 			"div",
-			{ className: "main-menu" },
+			{ className: classes },
 			React.createElement(
 				"div",
 				{ className: "logo" },
 				" "
 			),
-			React.createElement(AvatarSelect, { avatars: this.state.avatars })
+			React.createElement(AvatarSelect, { avatars: this.state.avatars, onSelected: this.onSelected })
 		);
 	}
 
@@ -366,7 +390,7 @@ var Game = React.createClass({
 		return React.createElement(
 			"div",
 			{ className: "game" },
-			React.createElement(Nav, { timer: this.state.timer }),
+			React.createElement(Nav, { timer: this.state.timer, player: active_player }),
 			React.createElement(Board, { rows: this.state.rows }),
 			React.createElement(Controls, { player: active_player })
 		);

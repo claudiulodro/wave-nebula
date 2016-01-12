@@ -166,8 +166,11 @@ var Nav = React.createClass({
 	render: function(){
 		
 		return (
-			<div className="nav-bar">
-				<div className="timer">{this.props.timer}</div>
+			<div className="nav-bar-container">
+				<div className="nav-bar">
+					<div className="timer">{this.props.timer}</div>
+					<div className="remaining-moves">{this.props.player.moves_remaining}</div>
+				</div>
 			</div>
 		);
 
@@ -184,6 +187,7 @@ var AvatarOption = React.createClass({
 		}
 
 		addPlayer( this.props.avatar );
+		var self = this;
 
 		EventHandler.on( 'player-added', function( evt, response ){
 
@@ -193,6 +197,8 @@ var AvatarOption = React.createClass({
 				return;
 			}
 			
+			self.props.onSelected();
+
 			ReactDOM.render(
 				<Game UID={response.data} />,
 				document.getElementById('game')
@@ -219,13 +225,16 @@ var AvatarOption = React.createClass({
 
 var AvatarSelect = React.createClass({
 
-	render: function(){		
+	render: function(){	
+		var self = this;
 
 		return (
+
+
 			<div className="avatar-select">
 				{ 
 					this.props.avatars.map( function( avatar, i ){
-						return <AvatarOption avatar={avatar.id} available={avatar.available} />
+						return <AvatarOption avatar={avatar.id} available={avatar.available} onSelected={self.props.onSelected} />
 					})
 				}
 			</div>
@@ -239,14 +248,15 @@ var MainMenu = React.createClass({
 
 	getInitialState: function(){
 		return {
-			avatars: []
+			avatars: [],
+			visible: true
 		}
 	},
 
 	updateState: function( data ){
 		this.setState( 
 			{ 
-				avatars: data,
+				avatars: data
 			 } 
 		);
 	},
@@ -267,8 +277,13 @@ var MainMenu = React.createClass({
 		});
 	},
 
+	onSelected: function(){
+		console.log( "PICKED A DUDE" );
+		this.setState( { visible: false } );
+	},
+
 	render: function(){
-		
+
 		if( typeof this.state === 'undefined' || typeof this.state.avatars === 'undefined' ){
 			return (
 			<div className="main-menu">
@@ -278,10 +293,15 @@ var MainMenu = React.createClass({
 			);
 		}
 
+		var classes = "main-menu";
+		if( !this.state.visible ){
+			classes += " is-hidden";
+		}
+
 		return (
-			<div className="main-menu">
+			<div className={classes}>
 				<div className="logo">&nbsp;</div>
-				<AvatarSelect avatars={this.state.avatars} />
+				<AvatarSelect avatars={this.state.avatars} onSelected={this.onSelected}/>
 			</div>
 		);
 
@@ -351,7 +371,7 @@ var Game = React.createClass({
 
 		return (
 			<div className="game">
-				<Nav timer={this.state.timer} />
+				<Nav timer={this.state.timer} player={active_player} />
 				<Board rows={this.state.rows} />
 				<Controls player={active_player} />
 			</div>

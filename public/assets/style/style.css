@@ -1,8 +1,14 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: gray;
+  background-color: #030D4A;
   width: 100%; }
+
+#game {
+  background-color: gray; }
+
+.is-hidden {
+  display: none; }
 
 .board {
   max-width: 800px;
@@ -12,7 +18,8 @@ body {
   overflow: hidden;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 200px; }
+  margin-bottom: 103px;
+  margin-top: 60px; }
 
 .row {
   clear: both; }
@@ -21,12 +28,13 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #030D4A;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  z-index: -1; }
 
 .main-menu {
-  max-width: 800px; }
+  max-width: 800px;
+  background-color: #030D4A; }
   .main-menu .logo {
     background: url("/assets/images/wn-logo.png");
     background-size: contain;
@@ -101,6 +109,40 @@ body {
   background-position: center;
   background-repeat: no-repeat; }
 
+.nav-bar-container {
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: gray; }
+
+.nav-bar {
+  color: #FFFFFF;
+  height: 50px;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  background: gray;
+  border-bottom: 10px solid #4d4d4d;
+  position: relative; }
+  .nav-bar .timer {
+    color: red;
+    font-size: 30px;
+    line-height: 50px;
+    font-weight: bold; }
+  .nav-bar .remaining-moves {
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: right;
+    font-size: 18px;
+    line-height: 50px;
+    font-weight: bold;
+    color: green; }
+
 .tile {
   width: 10%;
   float: left;
@@ -115,7 +157,7 @@ body {
     content: "+";
     display: block;
     position: absolute;
-    color: #333333;
+    color: gray;
     top: -.5em;
     left: -.5em; }
   .tile::after {

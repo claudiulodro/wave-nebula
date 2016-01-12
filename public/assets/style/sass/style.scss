@@ -1,7 +1,7 @@
 $dark_blue: #030D4A;
 $yellow: #E5FA00;
 $green: #82DB04;
-$gray: #333333;
+$gray: gray;
 
 $text-color: #FFFFFF;
 
@@ -12,8 +12,16 @@ $board-width: 800px;
 body {
 	margin: 0;
 	padding: 0;
-	background-color: gray;
+	background-color: $dark_blue;
 	width: 100%;
+}
+
+#game {
+	background-color: $gray;
+}
+
+.is-hidden {
+	display: none;
 }
 
 .board {
@@ -24,7 +32,8 @@ body {
 	overflow: hidden;
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 200px;
+	margin-bottom: 103px;
+	margin-top: 60px;
 }
 
 .row {
@@ -35,13 +44,14 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-color: $dark-blue;
 	width: 100%;
 	height: 100%;
+	z-index: -1;
 }
 
 .main-menu {
 	max-width: $board-width;
+	background-color: $dark-blue;
 
 	.logo {
 		background: url( '/assets/images/wn-logo.png' );
@@ -134,6 +144,46 @@ body {
 	background-repeat: no-repeat;
 }
 
+.nav-bar-container {
+	width: 100%;
+	height: 60px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	background-color: $gray;
+}
+
+.nav-bar {
+	color: $text-color;
+	height: 50px;
+	width: 100%;
+	max-width: $board-width;
+	margin-left: auto;
+	margin-right: auto;
+	background: $gray;
+	border-bottom: 10px solid darken( $gray,20% );
+	position: relative;
+
+	.timer {
+		color: red;
+		font-size: 30px;
+		line-height: 50px;
+		font-weight: bold;
+	}
+
+	.remaining-moves {
+		position: absolute;
+		right: 0;
+		top: 0;
+		text-align: right;
+		font-size: 18px;
+		line-height: 50px;
+		font-weight: bold;
+		color: green;
+	}
+}
+
 .tile {
 	width: 10%;
 	float: left;
@@ -168,7 +218,7 @@ body {
 }
 
 .controls-container {
-	background-color: gray;
+	background-color: $gray;
 	width: 100%;
 	position: fixed;
 	bottom: 0;
@@ -181,7 +231,7 @@ body {
 		margin-left: auto;
 		margin-right: auto;
 		color: $text-color;
-		border-top: 10px solid darken( gray, 20% );
+		border-top: 10px solid darken( $gray, 20% );
 
 		.control-button-container {
 			width: 20%;
