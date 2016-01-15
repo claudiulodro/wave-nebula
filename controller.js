@@ -1,5 +1,9 @@
 var models = require( './models' );
 
+/**
+* TODO: Add score to playertiles
+*/
+
 module.exports = {
 
 	BOARD_WIDTH: 10,
@@ -67,45 +71,57 @@ module.exports = {
 					}
 				}
 
-				//remove player from list
-				//TODO
-
-				//add player back to game if bot
-				if( !this.players[i].is_human ){
-
-					var available_avatars_exist = false;
-
-					for( var j = 0; j < this.avatars.length; ++j ){
-						if( this.avatars[j].available ){
-							available_avatars_exist = true;
-							break;
-						}
-					}
-
-					if( available_avatars_exist ){
-						var bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
-						while( !this.avatars[bot_avatar].available ){
-							bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
-						}
-						this.addBot( bot_avatar );
-					}
-
-				}
+				//Remove the old player from the list
+    				this.players.splice(i, 1);
 			}
 			else {
 				this.players[i].moves_remaining = this.NUM_PLAYER_MOVES;
-				var tile = this.getTileByPlayer( this.players[i].UID );
-				if( tile ){
+				var tile_position = this.getTileByPlayer( this.players[i].UID );
+				if( tile_position ){
 					++this.players[i].score;
+					this.tiles[tile_position.row][tile_position.column].score = this.players[i].score;
 				} 
 				else {
 					this.players[i].status = "dead";
 				}
 			}
-
-
 		}
 
+		this.repopulateBots();
+
+	},
+
+	repopulateBots: function(){
+		var existing_bots = 0;
+		for( var i = 0; i < this.players.length; ++i ){
+			if( !this.players[i].is_human ){
+				++existing_bots;
+			}
+		}
+
+		var needed_bots = this.NUM_BOTS - existing_bots;
+
+		if( needed_bots > 0 ){
+			for( var i = 0; i < needed_bots; ++i ){
+
+				var available_avatars_exist = false;
+
+				for( var j = 0; j < this.avatars.length; ++j ){
+					if( this.avatars[j].available ){
+						available_avatars_exist = true;
+						break;
+					}
+				}
+
+				if( available_avatars_exist ){
+					var bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
+					while( !this.avatars[bot_avatar].available ){
+						bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
+					}
+					this.addBot( bot_avatar );
+				}
+			}
+		}
 	},
 
 	/**
@@ -181,7 +197,7 @@ module.exports = {
 	},
 
 	/**
-	* Process all bombs that are already on the board
+	* Process and expand or remove all bombs that are already on the board
 	*/
 	processCurrentBombs: function(){ 
 
@@ -615,8 +631,8 @@ module.exports = {
 				bots.push( players[i] );
 			}
 		}
-
-		var possibleMoves = [ "up", "down", "left", "right", "bomb" ];
+console.log( "SHUFFLING " + bots.length + " BOTS" );
+		var possibleMoves = [ "up", "down", "left", "right", "up", "down", "left", "right", "bomb" ];
 
 		for( var i = 0; i < bots.length; ++i ){
 

@@ -47,6 +47,7 @@ module.exports = {
 		this.type = "player";
 		this.UID = UID;
 		this.avatar = avatar;
+		this.score = 0;
 	},
 
 	/**

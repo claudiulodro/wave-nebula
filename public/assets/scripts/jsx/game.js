@@ -1,11 +1,8 @@
 /**
 * FRONTEND TODO:
-* Player join/select
-* Move limit
+* Move limit graphic
 * Lose messages
 * Score visual
-* Used moves visual
-* CSS
 */
 
 /**
@@ -17,14 +14,20 @@ var Tile = React.createClass({
 
 		var classes = "tile " + this.props.data.type;
 		var style = {};
+		var text = "";
 
 		if( this.props.data.type == "player" ){
 			 classes += " avatar-" + this.props.data.avatar;
+			text = this.props.data.score;
+		}
+
+		if( this.props.data.type == "bomb" ){
+			classes += " remaining-"+this.props.data.turns_remaining;
 		}
 
 		return (
 			<div className={classes} style={style}>
-				&nbsp;
+				<div className="score">{text}</div>
 			</div>
 		);
 
@@ -50,6 +53,75 @@ var Row = React.createClass({
 		);
 
 	}
+
+});
+
+var ScrollButton = React.createClass({
+
+	getInitialState: function(){
+		return {
+			scrolling: false,
+			scrollTimer: null
+		}
+	},
+
+	startScrolling: function(){
+
+		var self = this;
+		var interval = 50;
+		var increment = 50;
+
+		if( this.state.scrollTimer != null ){
+			clearInterval( this.state.scrollTimer );
+		}
+
+		var scroll_timer = setInterval( function(){
+
+			var window_position = $( window ).scrollTop();
+
+			if( self.props.direction == "down" ){
+				window_position = window_position + increment;
+			}
+			else {
+				window_position = window_position - increment;
+			}
+
+    			$('html, body').animate({
+        			scrollTop: window_position
+    			}, interval );
+
+		}, interval );
+
+		this.setState(
+			{
+				scrolling: true,
+				scrollTimer: scroll_timer
+			}
+		);
+
+	},
+
+	stopScrolling: function(){
+
+		if( this.state.scrollTimer != null ){
+			clearInterval( this.state.scrollTimer );
+		}
+
+		this.setState( 
+			{ 
+				scrolling: false,
+				scrollTimer: null
+			 } 
+		);
+	},
+
+	render: function(){
+		var classes = "scroll-button " + this.props.direction;
+
+		return (
+			<div className={classes} onMouseDown={this.startScrolling} onMouseUp={this.stopScrolling} onTouchStart={this.startScrolling} onTouchEnd={this.stopScrolling}>&nbsp;</div>
+		);
+	}	
 
 });
 
@@ -346,7 +418,7 @@ var Game = React.createClass({
 			self.updateState( response.data );
 		});
 
-		setInterval( function(){ getGameState() }, 5000 );
+		setInterval( function(){ getGameState() }, 2000 );
 
 		setInterval( function(){
 			if( self.state.timer > 0 ){
@@ -354,7 +426,7 @@ var Game = React.createClass({
 					timer: self.state.timer - 1
 				});				
 			}
-			console.log( self.state.timer );
+
 		}, 1000 );
 	},
 
@@ -369,11 +441,35 @@ var Game = React.createClass({
 			}
 		}
 
+		//if( !active_player && this.state.players.length ){
+		//	location.reload();
+		//}
+
+		if( true || active_player.status == 'dead' ){
+			return (
+				<div className="game-over">
+
+					<div className="message">
+						You have died. 
+					</div>
+
+					<div className="link">
+						<a href="/">Play Again</a>
+					</div>
+
+				</div>
+			);
+		}
+
 		return (
 			<div className="game">
 				<Nav timer={this.state.timer} player={active_player} />
 				<Board rows={this.state.rows} />
 				<Controls player={active_player} />
+				<div className="scroll-button-container">
+					<ScrollButton direction="up" />
+					<ScrollButton direction="down" />
+				</div>
 			</div>
 		);
 	}

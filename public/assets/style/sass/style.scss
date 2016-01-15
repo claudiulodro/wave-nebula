@@ -1,11 +1,21 @@
+@font-face {
+  font-family: 'Chewy';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Chewy'), url('/assets/style/chewy.woff') format('woff');
+}
+
 $dark_blue: #030D4A;
 $yellow: #E5FA00;
-$green: #82DB04;
+$green: #0CBD0E;
 $gray: gray;
+
+$red: #F00;
+$dark-red: #900;
 
 $text-color: #FFFFFF;
 
-$board-width: 800px;
+$board-width: 90%;
 
 //TODO: Make standard background stuff into an extendable module
 
@@ -14,6 +24,7 @@ body {
 	padding: 0;
 	background-color: $dark_blue;
 	width: 100%;
+	font-family: chewy, sans-serif;
 }
 
 #game {
@@ -25,19 +36,59 @@ body {
 }
 
 .board {
-	max-width: $board-width;
-	width: 100%;
+	width: 80%;
 	background-color: #000000;
 	color: $text-color;
 	overflow: hidden;
-	margin-left: auto;
-	margin-right: auto;
+	margin-left: 5%;
 	margin-bottom: 103px;
 	margin-top: 60px;
+	position: relative;
 }
 
 .row {
 	clear: both;
+}
+
+.scroll-button-container {
+
+	position: fixed;
+	right: 5%;
+	top: 65px;
+	width: 10%;
+	height: 100%;
+	background-color: darken( $gray, 20% );
+	padding-top: 10px;
+
+	.scroll-button {
+		height: 65px;
+		width: 100%;
+		background-color: red;
+		cursor: pointer;
+
+		&.up {
+			border-top: 10px solid $dark-red;
+			border-bottom: 1px solid $dark-red;
+
+			&:active {
+				border-top: 5px solid $dark-red;
+				margin-top: 5px;
+			}
+		}
+
+		&.down {
+			border-bottom: 10px solid $dark-red;
+			border-top: 1px solid $dark-red;
+
+			&:active {
+				border-bottom: 5px solid $dark-red;
+			}
+		}
+
+		&:active {
+			background-color: $dark-red;
+		}
+	}
 }
 
 #menu {
@@ -166,10 +217,16 @@ body {
 	position: relative;
 
 	.timer {
-		color: red;
-		font-size: 30px;
-		line-height: 50px;
+		color: $green;
+		font-size: 22px;
+		line-height: 30px;
 		font-weight: bold;
+		background-color: #000000;
+		text-align: right;
+		padding-right: 10px;
+		width: 35px;
+		margin-top: 5px;
+		border: 5px solid darken( $gray, 20% );
 	}
 
 	.remaining-moves {
@@ -194,11 +251,31 @@ body {
 
 	}
 
-	&.bomb {
+	&.bomb.remaining-3 {
 		background: url( '/assets/images/bomb-1.png' );
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
+	}
+
+	&.bomb.remaining-2 {
+		background: url( '/assets/images/bomb-2.png' );
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	&.bomb.remaining-1 {
+		background: url( '/assets/images/bomb-3.png' );
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.score {
+		position: absolute;
+		bottom: 5px;
+		right: 10px;
 	}
 
 	&::before {
@@ -222,7 +299,7 @@ body {
 	width: 100%;
 	position: fixed;
 	bottom: 0;
-
+	z-index: 2;
 
 	.controls {
 		$button_bg: red;
@@ -234,8 +311,9 @@ body {
 		border-top: 10px solid darken( $gray, 20% );
 
 		.control-button-container {
-			width: 20%;
+			width: 15%;
 			float: left;
+			margin-left: 3.5%;
 			
 			.control-button {
 
@@ -247,6 +325,7 @@ body {
 				background: red;
 				height: 60px;
 				border-top: 3px solid darken( $button_bg, 20% );
+				cursor: pointer;
 
 				&.up {
 					background: $button_bg url( '/assets/images/button-up.png' );
@@ -290,4 +369,41 @@ body {
 			}
 		}
 	}
+}
+
+.game-over {
+	background-color: $dark_blue;
+	color: $red;
+	text-align: center;
+	text-transform: uppercase;
+	line-height: 100px;
+	padding: 40px;
+	
+	.message {
+		line-height: 100px;
+		background-color: #000000;
+		color: $green;
+		border: 10px solid $gray;
+		max-width: $board_width;
+		margin-left: auto;
+		margin-right: auto;
+		font-size: 36px;
+	}
+
+
+	.link {
+		background-color: $red;
+		border-top: 10px solid $dark_red;
+		margin-top: 20px;
+		font-size: 36px;
+		max-width: $board_width;
+		margin-left: auto;
+		margin-right: auto;
+
+		a {
+			color: $text_color;
+			text-decoration: none;
+		}
+	}
+
 }

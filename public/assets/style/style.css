@@ -1,8 +1,24 @@
+@font-face {
+  font-family: 'Bangers';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Bangers"), local("Bangers-Regular"), url("/assets/style/bangers.woff") format("woff"); }
+@font-face {
+  font-family: 'Chewy';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Chewy"), url("/assets/style/chewy.woff") format("woff"); }
+@font-face {
+  font-family: 'Fredoka One';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Fredoka One"), local("FredokaOne-Regular"), url("/assets/style/fredoka.woff") format("woff"); }
 body {
   margin: 0;
   padding: 0;
   background-color: #030D4A;
-  width: 100%; }
+  width: 100%;
+  font-family: chewy, sans-serif; }
 
 #game {
   background-color: gray; }
@@ -11,18 +27,44 @@ body {
   display: none; }
 
 .board {
-  max-width: 800px;
-  width: 100%;
+  width: 80%;
   background-color: #000000;
   color: #FFFFFF;
   overflow: hidden;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 5%;
   margin-bottom: 103px;
-  margin-top: 60px; }
+  margin-top: 60px;
+  position: relative; }
 
 .row {
   clear: both; }
+
+.scroll-button-container {
+  position: fixed;
+  right: 5%;
+  top: 65px;
+  width: 10%;
+  height: 100%;
+  background-color: #4d4d4d;
+  padding-top: 10px; }
+  .scroll-button-container .scroll-button {
+    height: 65px;
+    width: 100%;
+    background-color: red;
+    cursor: pointer; }
+    .scroll-button-container .scroll-button.up {
+      border-top: 10px solid #900;
+      border-bottom: 1px solid #900; }
+      .scroll-button-container .scroll-button.up:active {
+        border-top: 5px solid #900;
+        margin-top: 5px; }
+    .scroll-button-container .scroll-button.down {
+      border-bottom: 10px solid #900;
+      border-top: 1px solid #900; }
+      .scroll-button-container .scroll-button.down:active {
+        border-bottom: 5px solid #900; }
+    .scroll-button-container .scroll-button:active {
+      background-color: #900; }
 
 #menu {
   position: absolute;
@@ -33,7 +75,7 @@ body {
   z-index: -1; }
 
 .main-menu {
-  max-width: 800px;
+  max-width: 90%;
   background-color: #030D4A; }
   .main-menu .logo {
     background: url("/assets/images/wn-logo.png");
@@ -122,17 +164,23 @@ body {
   color: #FFFFFF;
   height: 50px;
   width: 100%;
-  max-width: 800px;
+  max-width: 90%;
   margin-left: auto;
   margin-right: auto;
   background: gray;
   border-bottom: 10px solid #4d4d4d;
   position: relative; }
   .nav-bar .timer {
-    color: red;
-    font-size: 30px;
-    line-height: 50px;
-    font-weight: bold; }
+    color: #0CBD0E;
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: bold;
+    background-color: #000000;
+    text-align: right;
+    padding-right: 10px;
+    width: 35px;
+    margin-top: 5px;
+    border: 5px solid #4d4d4d; }
   .nav-bar .remaining-moves {
     position: absolute;
     right: 0;
@@ -148,11 +196,25 @@ body {
   float: left;
   position: relative;
   background-color: #000000; }
-  .tile.bomb {
+  .tile.bomb.remaining-3 {
     background: url("/assets/images/bomb-1.png");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat; }
+  .tile.bomb.remaining-2 {
+    background: url("/assets/images/bomb-2.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
+  .tile.bomb.remaining-1 {
+    background: url("/assets/images/bomb-3.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
+  .tile .score {
+    position: absolute;
+    bottom: 5px;
+    right: 10px; }
   .tile::before {
     content: "+";
     display: block;
@@ -169,17 +231,19 @@ body {
   background-color: gray;
   width: 100%;
   position: fixed;
-  bottom: 0; }
+  bottom: 0;
+  z-index: 2; }
   .controls-container .controls {
     width: 100%;
-    max-width: 800px;
+    max-width: 90%;
     margin-left: auto;
     margin-right: auto;
     color: #FFFFFF;
     border-top: 10px solid #4d4d4d; }
     .controls-container .controls .control-button-container {
-      width: 20%;
-      float: left; }
+      width: 15%;
+      float: left;
+      margin-left: 3.5%; }
       .controls-container .controls .control-button-container .control-button {
         width: 80%;
         margin-left: 10%;
@@ -188,7 +252,8 @@ body {
         margin-bottom: 10%;
         background: red;
         height: 60px;
-        border-top: 3px solid #990000; }
+        border-top: 3px solid #990000;
+        cursor: pointer; }
         .controls-container .controls .control-button-container .control-button.up {
           background: red url("/assets/images/button-up.png");
           background-size: 35%;
@@ -217,5 +282,33 @@ body {
         .controls-container .controls .control-button-container .control-button:active {
           background-color: #990000;
           border-top: none; }
+
+.game-over {
+  background-color: #030D4A;
+  color: #F00;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 100px;
+  padding: 40px; }
+  .game-over .message {
+    line-height: 100px;
+    background-color: #000000;
+    color: #0CBD0E;
+    border: 10px solid gray;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 36px; }
+  .game-over .link {
+    background-color: #F00;
+    border-top: 10px solid #900;
+    margin-top: 20px;
+    font-size: 36px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto; }
+    .game-over .link a {
+      color: #FFFFFF;
+      text-decoration: none; }
 
 /*# sourceMappingURL=style.css.map */

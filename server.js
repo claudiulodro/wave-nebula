@@ -93,7 +93,6 @@ app.get( '/api/addplayer', function( req, res ) {
 	}
 
 	var UID = controller.addHuman( req.query.avatar );
-console.log( "UID: " + UID + "AVATAR: " + req.query.avatar );
 	if( !UID ){
 		res.send( util.sendError( "Failed to add player" ) );
 		return;

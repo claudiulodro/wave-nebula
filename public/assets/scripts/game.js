@@ -1,11 +1,8 @@
 /**
 * FRONTEND TODO:
-* Player join/select
-* Move limit
+* Move limit graphic
 * Lose messages
 * Score visual
-* Used moves visual
-* CSS
 */
 
 /**
@@ -18,15 +15,25 @@ var Tile = React.createClass({
 
 		var classes = "tile " + this.props.data.type;
 		var style = {};
+		var text = "";
 
 		if (this.props.data.type == "player") {
 			classes += " avatar-" + this.props.data.avatar;
+			text = this.props.data.score;
+		}
+
+		if (this.props.data.type == "bomb") {
+			classes += " remaining-" + this.props.data.turns_remaining;
 		}
 
 		return React.createElement(
 			"div",
 			{ className: classes, style: style },
-			" "
+			React.createElement(
+				"div",
+				{ className: "score" },
+				text
+			)
 		);
 	}
 
@@ -46,6 +53,71 @@ var Row = React.createClass({
 			this.props.tiles.map(function (tile, i) {
 				return React.createElement(Tile, { data: tile });
 			})
+		);
+	}
+
+});
+
+var ScrollButton = React.createClass({
+	displayName: "ScrollButton",
+
+	getInitialState: function () {
+		return {
+			scrolling: false,
+			scrollTimer: null
+		};
+	},
+
+	startScrolling: function () {
+
+		var self = this;
+		var interval = 50;
+		var increment = 50;
+
+		if (this.state.scrollTimer != null) {
+			clearInterval(this.state.scrollTimer);
+		}
+
+		var scroll_timer = setInterval(function () {
+
+			var window_position = $(window).scrollTop();
+
+			if (self.props.direction == "down") {
+				window_position = window_position + increment;
+			} else {
+				window_position = window_position - increment;
+			}
+
+			$('html, body').animate({
+				scrollTop: window_position
+			}, interval);
+		}, interval);
+
+		this.setState({
+			scrolling: true,
+			scrollTimer: scroll_timer
+		});
+	},
+
+	stopScrolling: function () {
+
+		if (this.state.scrollTimer != null) {
+			clearInterval(this.state.scrollTimer);
+		}
+
+		this.setState({
+			scrolling: false,
+			scrollTimer: null
+		});
+	},
+
+	render: function () {
+		var classes = "scroll-button " + this.props.direction;
+
+		return React.createElement(
+			"div",
+			{ className: classes, onMouseDown: this.startScrolling, onMouseUp: this.stopScrolling, onTouchStart: this.startScrolling, onTouchEnd: this.stopScrolling },
+			" "
 		);
 	}
 
@@ -364,7 +436,7 @@ var Game = React.createClass({
 
 		setInterval(function () {
 			getGameState();
-		}, 5000);
+		}, 2000);
 
 		setInterval(function () {
 			if (self.state.timer > 0) {
@@ -372,7 +444,6 @@ var Game = React.createClass({
 					timer: self.state.timer - 1
 				});
 			}
-			console.log(self.state.timer);
 		}, 1000);
 	},
 
@@ -387,12 +458,43 @@ var Game = React.createClass({
 			}
 		}
 
+		//if( !active_player && this.state.players.length ){
+		//	location.reload();
+		//}
+
+		if (true || active_player.status == 'dead') {
+			return React.createElement(
+				"div",
+				{ className: "game-over" },
+				React.createElement(
+					"div",
+					{ className: "message" },
+					"You have died."
+				),
+				React.createElement(
+					"div",
+					{ className: "link" },
+					React.createElement(
+						"a",
+						{ href: "/" },
+						"Play Again"
+					)
+				)
+			);
+		}
+
 		return React.createElement(
 			"div",
 			{ className: "game" },
 			React.createElement(Nav, { timer: this.state.timer, player: active_player }),
 			React.createElement(Board, { rows: this.state.rows }),
-			React.createElement(Controls, { player: active_player })
+			React.createElement(Controls, { player: active_player }),
+			React.createElement(
+				"div",
+				{ className: "scroll-button-container" },
+				React.createElement(ScrollButton, { direction: "up" }),
+				React.createElement(ScrollButton, { direction: "down" })
+			)
 		);
 	}
 });
