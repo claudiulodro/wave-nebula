@@ -8,8 +8,8 @@
 $dark_blue: #030D4A;
 $yellow: #E5FA00;
 $green: #0CBD0E;
-$gray: gray;
-
+$gray: #808080;
+$dark-gray: darken( $gray, 20% );
 $red: #F00;
 $dark-red: #900;
 
@@ -17,14 +17,18 @@ $text-color: #FFFFFF;
 
 $board-width: 90%;
 
-//TODO: Make standard background stuff into an extendable module
-
 body {
 	margin: 0;
 	padding: 0;
 	background-color: $dark_blue;
 	width: 100%;
 	font-family: chewy, sans-serif;
+    	-webkit-touch-callout: none;
+    	-webkit-user-select: none;
+    	-khtml-user-select: none;
+    	-moz-user-select: none;
+    	-ms-user-select: none;
+    	user-select: none;
 }
 
 #game {
@@ -41,7 +45,7 @@ body {
 	color: $text-color;
 	overflow: hidden;
 	margin-left: 5%;
-	margin-bottom: 103px;
+	margin-bottom: 111px;
 	margin-top: 60px;
 	position: relative;
 }
@@ -57,7 +61,7 @@ body {
 	top: 65px;
 	width: 10%;
 	height: 100%;
-	background-color: darken( $gray, 20% );
+	background-color: $dark-gray;
 	padding-top: 10px;
 
 	.scroll-button {
@@ -101,26 +105,31 @@ body {
 }
 
 .main-menu {
-	max-width: $board-width;
+	width: $board-width;
+	margin-left: auto;
+	margin-right: auto;
 	background-color: $dark-blue;
+	position: relative;
 
 	.logo {
-		background: url( '/assets/images/wn-logo.png' );
-		background-size: contain;
-		background-position: center;
-		background-repeat: no-repeat;
-		height: 15%;
+		color: $yellow;
+		text-shadow: 5px 5px $red;
+		font-size: 36px;
+		text-transform: uppercase;
+		font-weight: bold;
+		text-align: center;
 	}
 
 	.avatar-select {
-		width: 300px;
+		width: 270px;
 		margin-left: auto;
 		margin-right: auto;
+		overflow: hidden;
 	}
 
 	.avatar-option {
-		width: 100px;
-		height: 100px;
+		width: 90px;
+		height: 90px;
 		background-color: #000000;
 		float: left;
 		opacity: .3;
@@ -129,6 +138,11 @@ body {
 		&.available {
 			opacity: 1;
 		}
+	}
+
+	.instruction {
+		text-align: center;
+		color: $gray;
 	}
 }
 
@@ -213,7 +227,7 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	background: $gray;
-	border-bottom: 10px solid darken( $gray,20% );
+	border-bottom: 10px solid $dark-gray;
 	position: relative;
 
 	.timer {
@@ -226,7 +240,7 @@ body {
 		padding-right: 10px;
 		width: 35px;
 		margin-top: 5px;
-		border: 5px solid darken( $gray, 20% );
+		border: 5px solid $dark-gray;
 	}
 
 	.remaining-moves {
@@ -235,9 +249,14 @@ body {
 		top: 0;
 		text-align: right;
 		font-size: 18px;
-		line-height: 50px;
+		line-height: 30px;
+		height: 30px;
 		font-weight: bold;
-		color: green;
+		color: $red;
+		background-color: #000000;
+		padding-right: 10px;
+		width: 35px;
+		border: 5px solid $dark-gray;
 	}
 }
 
@@ -246,10 +265,6 @@ body {
 	float: left;
 	position: relative;
 	background-color: #000000;
-
-	&.player {
-
-	}
 
 	&.bomb.remaining-3 {
 		background: url( '/assets/images/bomb-1.png' );
@@ -302,13 +317,13 @@ body {
 	z-index: 2;
 
 	.controls {
-		$button_bg: red;
+		$button_bg: $red;
 		width: 100%;
 		max-width: $board-width;
 		margin-left: auto;
 		margin-right: auto;
 		color: $text-color;
-		border-top: 10px solid darken( $gray, 20% );
+		border-top: 10px solid $dark-gray;
 
 		.control-button-container {
 			width: 15%;
@@ -320,11 +335,11 @@ body {
 				width: 80%;
 				margin-left: 10%;
 				margin-right: 10%;
-				margin-top: 10%;
-				margin-bottom: 10%;
+				margin-top: 20px;
+				margin-bottom: 20px;
 				background: red;
 				height: 60px;
-				border-top: 3px solid darken( $button_bg, 20% );
+				border-top: 3px solid $dark-red;
 				cursor: pointer;
 
 				&.up {
@@ -363,7 +378,7 @@ body {
 				}
 
 				&:active {
-					background-color: darken( $button_bg, 20% );
+					background-color: $dark-red;
 					border-top: none;
 				}
 			}

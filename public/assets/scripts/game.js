@@ -1,11 +1,4 @@
 /**
-* FRONTEND TODO:
-* Move limit graphic
-* Lose messages
-* Score visual
-*/
-
-/**
 * One tile on the field
 */
 var Tile = React.createClass({
@@ -58,6 +51,9 @@ var Row = React.createClass({
 
 });
 
+/**
+* Moves screen up or down
+*/
 var ScrollButton = React.createClass({
 	displayName: "ScrollButton",
 
@@ -232,6 +228,9 @@ var Controls = React.createClass({
 	}
 });
 
+/**
+* UI for timer and move limit
+*/
 var Nav = React.createClass({
 	displayName: "Nav",
 
@@ -242,6 +241,11 @@ var Nav = React.createClass({
 	},
 
 	render: function () {
+
+		var moves_remaining_string = "";
+		for (var i = 0; i < this.props.player.moves_remaining; ++i) {
+			moves_remaining_string += "*";
+		}
 
 		return React.createElement(
 			"div",
@@ -257,7 +261,7 @@ var Nav = React.createClass({
 				React.createElement(
 					"div",
 					{ className: "remaining-moves" },
-					this.props.player.moves_remaining
+					moves_remaining_string
 				)
 			)
 		);
@@ -265,6 +269,9 @@ var Nav = React.createClass({
 
 });
 
+/**
+* One avatar possibility
+*/
 var AvatarOption = React.createClass({
 	displayName: "AvatarOption",
 
@@ -279,7 +286,6 @@ var AvatarOption = React.createClass({
 
 		EventHandler.on('player-added', function (evt, response) {
 
-			console.log("PLAYR MADE");
 			if (response.status != "OK") {
 				console.log("Error making player");
 				return;
@@ -306,6 +312,9 @@ var AvatarOption = React.createClass({
 
 });
 
+/**
+* The avatar select menu
+*/
 var AvatarSelect = React.createClass({
 	displayName: "AvatarSelect",
 
@@ -323,6 +332,9 @@ var AvatarSelect = React.createClass({
 
 });
 
+/**
+* The main menu
+*/
 var MainMenu = React.createClass({
 	displayName: "MainMenu",
 
@@ -345,7 +357,6 @@ var MainMenu = React.createClass({
 
 		EventHandler.on('avatars-fetched', function (evt, response) {
 
-			console.log("AVATARS FETCHED");
 			if (response.status != "OK") {
 				console.log("Error fetching avatars");
 				return;
@@ -356,7 +367,6 @@ var MainMenu = React.createClass({
 	},
 
 	onSelected: function () {
-		console.log("PICKED A DUDE");
 		this.setState({ visible: false });
 	},
 
@@ -369,7 +379,7 @@ var MainMenu = React.createClass({
 				React.createElement(
 					"div",
 					{ className: "logo" },
-					" "
+					"Wave Nebula"
 				),
 				React.createElement(
 					"div",
@@ -390,9 +400,14 @@ var MainMenu = React.createClass({
 			React.createElement(
 				"div",
 				{ className: "logo" },
-				" "
+				"Wave Nebula"
 			),
-			React.createElement(AvatarSelect, { avatars: this.state.avatars, onSelected: this.onSelected })
+			React.createElement(AvatarSelect, { avatars: this.state.avatars, onSelected: this.onSelected }),
+			React.createElement(
+				"div",
+				{ className: "instruction" },
+				"Turn phone sideways"
+			)
 		);
 	}
 
@@ -425,7 +440,6 @@ var Game = React.createClass({
 
 		EventHandler.on('board-refresh', function (evt, response) {
 
-			console.log("UPDATED STATE");
 			if (response.status != "OK") {
 				console.log("Error fetching board state");
 				return;
@@ -436,7 +450,7 @@ var Game = React.createClass({
 
 		setInterval(function () {
 			getGameState();
-		}, 2000);
+		}, 1000);
 
 		setInterval(function () {
 			if (self.state.timer > 0) {
@@ -458,11 +472,11 @@ var Game = React.createClass({
 			}
 		}
 
-		//if( !active_player && this.state.players.length ){
-		//	location.reload();
-		//}
+		if (!active_player && this.state.players.length) {
+			location.reload();
+		}
 
-		if (true || active_player.status == 'dead') {
+		if (active_player.status == 'dead') {
 			return React.createElement(
 				"div",
 				{ className: "game-over" },

@@ -1,27 +1,23 @@
 @font-face {
-  font-family: 'Bangers';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Bangers"), local("Bangers-Regular"), url("/assets/style/bangers.woff") format("woff"); }
-@font-face {
   font-family: 'Chewy';
   font-style: normal;
   font-weight: 400;
   src: local("Chewy"), url("/assets/style/chewy.woff") format("woff"); }
-@font-face {
-  font-family: 'Fredoka One';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Fredoka One"), local("FredokaOne-Regular"), url("/assets/style/fredoka.woff") format("woff"); }
 body {
   margin: 0;
   padding: 0;
   background-color: #030D4A;
   width: 100%;
-  font-family: chewy, sans-serif; }
+  font-family: chewy, sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 #game {
-  background-color: gray; }
+  background-color: #808080; }
 
 .is-hidden {
   display: none; }
@@ -32,7 +28,7 @@ body {
   color: #FFFFFF;
   overflow: hidden;
   margin-left: 5%;
-  margin-bottom: 103px;
+  margin-bottom: 111px;
   margin-top: 60px;
   position: relative; }
 
@@ -75,27 +71,35 @@ body {
   z-index: -1; }
 
 .main-menu {
-  max-width: 90%;
-  background-color: #030D4A; }
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #030D4A;
+  position: relative; }
   .main-menu .logo {
-    background: url("/assets/images/wn-logo.png");
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 15%; }
+    color: #E5FA00;
+    text-shadow: 5px 5px #F00;
+    font-size: 36px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center; }
   .main-menu .avatar-select {
-    width: 300px;
+    width: 270px;
     margin-left: auto;
-    margin-right: auto; }
+    margin-right: auto;
+    overflow: hidden; }
   .main-menu .avatar-option {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     background-color: #000000;
     float: left;
     opacity: .3;
     cursor: pointer; }
     .main-menu .avatar-option.available {
       opacity: 1; }
+  .main-menu .instruction {
+    text-align: center;
+    color: #808080; }
 
 .avatar-1 {
   background: url("/assets/images/alien-1.png");
@@ -158,7 +162,7 @@ body {
   top: 0;
   left: 0;
   z-index: 1;
-  background-color: gray; }
+  background-color: #808080; }
 
 .nav-bar {
   color: #FFFFFF;
@@ -167,7 +171,7 @@ body {
   max-width: 90%;
   margin-left: auto;
   margin-right: auto;
-  background: gray;
+  background: #808080;
   border-bottom: 10px solid #4d4d4d;
   position: relative; }
   .nav-bar .timer {
@@ -187,9 +191,14 @@ body {
     top: 0;
     text-align: right;
     font-size: 18px;
-    line-height: 50px;
+    line-height: 30px;
+    height: 30px;
     font-weight: bold;
-    color: green; }
+    color: #F00;
+    background-color: #000000;
+    padding-right: 10px;
+    width: 35px;
+    border: 5px solid #4d4d4d; }
 
 .tile {
   width: 10%;
@@ -219,7 +228,7 @@ body {
     content: "+";
     display: block;
     position: absolute;
-    color: gray;
+    color: #808080;
     top: -.5em;
     left: -.5em; }
   .tile::after {
@@ -228,7 +237,7 @@ body {
     padding-bottom: 100%; }
 
 .controls-container {
-  background-color: gray;
+  background-color: #808080;
   width: 100%;
   position: fixed;
   bottom: 0;
@@ -248,39 +257,39 @@ body {
         width: 80%;
         margin-left: 10%;
         margin-right: 10%;
-        margin-top: 10%;
-        margin-bottom: 10%;
+        margin-top: 20px;
+        margin-bottom: 20px;
         background: red;
         height: 60px;
-        border-top: 3px solid #990000;
+        border-top: 3px solid #900;
         cursor: pointer; }
         .controls-container .controls .control-button-container .control-button.up {
-          background: red url("/assets/images/button-up.png");
+          background: #F00 url("/assets/images/button-up.png");
           background-size: 35%;
           background-position: center;
           background-repeat: no-repeat; }
         .controls-container .controls .control-button-container .control-button.down {
-          background: red url("/assets/images/button-down.png");
+          background: #F00 url("/assets/images/button-down.png");
           background-size: 35%;
           background-position: center;
           background-repeat: no-repeat; }
         .controls-container .controls .control-button-container .control-button.left {
-          background: red url("/assets/images/button-left.png");
+          background: #F00 url("/assets/images/button-left.png");
           background-size: 35%;
           background-position: center;
           background-repeat: no-repeat; }
         .controls-container .controls .control-button-container .control-button.right {
-          background: red url("/assets/images/button-right.png");
+          background: #F00 url("/assets/images/button-right.png");
           background-size: 35%;
           background-position: center;
           background-repeat: no-repeat; }
         .controls-container .controls .control-button-container .control-button.bomb {
-          background: red url("/assets/images/button-bomb.png");
+          background: #F00 url("/assets/images/button-bomb.png");
           background-size: 40%;
           background-position: center;
           background-repeat: no-repeat; }
         .controls-container .controls .control-button-container .control-button:active {
-          background-color: #990000;
+          background-color: #900;
           border-top: none; }
 
 .game-over {
@@ -294,7 +303,7 @@ body {
     line-height: 100px;
     background-color: #000000;
     color: #0CBD0E;
-    border: 10px solid gray;
+    border: 10px solid #808080;
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;

@@ -1,17 +1,13 @@
 var models = require( './models' );
 
-/**
-* TODO: Add score to playertiles
-*/
-
 module.exports = {
 
 	BOARD_WIDTH: 10,
 	BOARD_HEIGHT: 10,
 	BOMB_TURNS: 3,
-	ROUND_LENGTH: 15,
+	ROUND_LENGTH: 5,
 	NUM_PLAYER_MOVES: 3,
-	NUM_BOTS: 3,
+	NUM_BOTS: 1,
 	
 
 	timer: 0,
@@ -89,39 +85,6 @@ module.exports = {
 
 		this.repopulateBots();
 
-	},
-
-	repopulateBots: function(){
-		var existing_bots = 0;
-		for( var i = 0; i < this.players.length; ++i ){
-			if( !this.players[i].is_human ){
-				++existing_bots;
-			}
-		}
-
-		var needed_bots = this.NUM_BOTS - existing_bots;
-
-		if( needed_bots > 0 ){
-			for( var i = 0; i < needed_bots; ++i ){
-
-				var available_avatars_exist = false;
-
-				for( var j = 0; j < this.avatars.length; ++j ){
-					if( this.avatars[j].available ){
-						available_avatars_exist = true;
-						break;
-					}
-				}
-
-				if( available_avatars_exist ){
-					var bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
-					while( !this.avatars[bot_avatar].available ){
-						bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
-					}
-					this.addBot( bot_avatar );
-				}
-			}
-		}
 	},
 
 	/**
@@ -412,9 +375,10 @@ module.exports = {
 	makeBots: function(){
 		this.players = [];
 		
-		this.addBot( 1 );
-		this.addBot( 2 );
-		this.addBot( 3 );
+		for( var i = 0; i < this.NUM_BOTS; ++i ){
+			this.addBot( i );
+		}
+
 	},
 
 	/**
@@ -469,7 +433,6 @@ module.exports = {
 	* @param avatar - String: The avatar of the player
 	*/
 	addBot: function( avatar ){
-		console.log( "ADDING BOT WITH AVATAR: " + avatar );
 		return this.addPlayer( avatar, false );
 	},
 
@@ -558,28 +521,6 @@ module.exports = {
 	},
 
 	/**
-	* Get the player object at a position
-	* @param position - Position object
-	* @return Player object or false on fail
-	*/
-	getPlayerByTile: function( position ){
-
-		var tile = this.tileAt( position );
-
-		if( tile.type != "player" ){
-			return false;
-		}		
-
-		for( var i = 0; i < this.players.length; ++i ){
-			if( this.players[i].UID == tile.UID ){
-				return this.players[i];
-			}
-		}
-			
-		return false;
-	},
-
-	/**
 	* Get the player object by UID
 	* @param UID - The UID of the player to match
 	* @return Player object or false on fail
@@ -619,6 +560,28 @@ module.exports = {
 	},
 
 	/**
+	* Get the player object at a position
+	* @param position - Position object
+	* @return Player object or false on fail
+	*/
+	getPlayerByTile: function( position ){
+
+		var tile = this.tileAt( position );
+
+		if( tile.type != "player" ){
+			return false;
+		}		
+
+		for( var i = 0; i < this.players.length; ++i ){
+			if( this.players[i].UID == tile.UID ){
+				return this.players[i];
+			}
+		}
+			
+		return false;
+	},
+
+	/**
 	* Do some random moves for the bots
 	*/
 	shuffleBots: function(){
@@ -631,7 +594,7 @@ module.exports = {
 				bots.push( players[i] );
 			}
 		}
-console.log( "SHUFFLING " + bots.length + " BOTS" );
+
 		var possibleMoves = [ "up", "down", "left", "right", "up", "down", "left", "right", "bomb" ];
 
 		for( var i = 0; i < bots.length; ++i ){
@@ -644,6 +607,42 @@ console.log( "SHUFFLING " + bots.length + " BOTS" );
 
 		}
 		this.doAllMoves();
+	},
+
+	/**
+	* Add more bots if needed
+	*/
+	repopulateBots: function(){
+		var existing_bots = 0;
+		for( var i = 0; i < this.players.length; ++i ){
+			if( !this.players[i].is_human ){
+				++existing_bots;
+			}
+		}
+
+		var needed_bots = this.NUM_BOTS - existing_bots;
+
+		if( needed_bots > 0 ){
+			for( var i = 0; i < needed_bots; ++i ){
+
+				var available_avatars_exist = false;
+
+				for( var j = 0; j < this.avatars.length; ++j ){
+					if( this.avatars[j].available ){
+						available_avatars_exist = true;
+						break;
+					}
+				}
+
+				if( available_avatars_exist ){
+					var bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
+					while( !this.avatars[bot_avatar].available ){
+						bot_avatar = Math.floor( ( Math.random() * this.avatars.length ) );
+					}
+					this.addBot( bot_avatar );
+				}
+			}
+		}
 	}
 
 };
